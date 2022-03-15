@@ -6,21 +6,28 @@
 #    By: pmontese <pmontes@student.42madrid.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/08 23:23:47 by pmontese          #+#    #+#              #
-#    Updated: 2022/03/09 11:00:42 by pmontese         ###   ########.fr        #
+#    Updated: 2022/03/15 18:23:03 by pmontese         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Name of the program.
 NAME	:= test
 
+# Name of the executable using std
+NAMEO	:= testo
+
 # Sources and objects.
-HDRS	:= vector.hpp
+HDRS	:= vector.hpp randIt.hpp
 SRCS	:= main.cpp
 OBJS	:= $(SRCS:.cpp=.o)
 
+SRCSO	:= maino.cpp
+OBJSO	:= $(SRCSO:.cpp=.o)
+
 # Define all the compiling flags.
 CXX			:= clang++
-CXXFLAGS	:= -g -std=c++98 -Wall -Wextra #-Werror
+CXXFLAGS	:= -std=c++98 -Wall -Wextra #-Werror
+SANITIZEFLAGS	:= #-fsanitize=address -g
 
 # Compile and create everything.
 all: $(NAME)
@@ -31,20 +38,28 @@ $(NAME): $(OBJS) $(HDRS)
 
 # This won't run if the source files don't exist or are not modified.
 %.o: %.cpp %.hpp
-		$(CXX) $(CXXFLAGS) -o $@ -c $<
+		$(CXX) $(CXXFLAGS) $(SANITIZEFLAGS) -o $@ -c $<
 
 # Rule to run the program.
 run: re
 		./$(NAME)
 
+$(NAMEO): $(OBJSO)
+		$(CXX) $(CXXFLAGS) $(SRCSO) -o $(NAMEO)
+# Rule to run with the std library
+runo: $(NAMEO)
+		./testo
+
 # Rule to remove all the object files.
 clean:
 		@rm -f $(OBJS)
+		@rm -f $(OBJSO)
 		@echo "[INFO] Objects removed!"
 
 # Rule to remove everything that has been created by the makefile.
 fclean: clean
 		@rm -f $(NAME)
+		@rm -f $(NAMEO)
 		@echo "[INFO] $(NAME) removed!"
 
 # Rule to re-make everything.
