@@ -1,0 +1,6 @@
+#if !defined(ITERATOR_TRAIT_HPP)
+#define ITERATOR_TRAIT_HPP
+
+
+
+#endif // ITERATOR_TRAIT_HPP

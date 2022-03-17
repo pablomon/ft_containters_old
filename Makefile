@@ -6,28 +6,23 @@
 #    By: pmontese <pmontes@student.42madrid.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/08 23:23:47 by pmontese          #+#    #+#              #
-#    Updated: 2022/03/15 18:23:03 by pmontese         ###   ########.fr        #
+#    Updated: 2022/03/17 20:12:47 by pmontese         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Name of the program.
 NAME	:= test
 
-# Name of the executable using std
-NAMEO	:= testo
-
 # Sources and objects.
-HDRS	:= vector.hpp randIt.hpp
+HDRS	:= vector.hpp iterator.hpp vector_iterator.hpp iterator_traits.hpp
 SRCS	:= main.cpp
 OBJS	:= $(SRCS:.cpp=.o)
-
-SRCSO	:= maino.cpp
-OBJSO	:= $(SRCSO:.cpp=.o)
 
 # Define all the compiling flags.
 CXX			:= clang++
 CXXFLAGS	:= -std=c++98 -Wall -Wextra #-Werror
 SANITIZEFLAGS	:= #-fsanitize=address -g
+STDFLAG		:= -D VECTOR=std::vector
 
 # Compile and create everything.
 all: $(NAME)
@@ -44,11 +39,10 @@ $(NAME): $(OBJS) $(HDRS)
 run: re
 		./$(NAME)
 
-$(NAMEO): $(OBJSO)
-		$(CXX) $(CXXFLAGS) $(SRCSO) -o $(NAMEO)
 # Rule to run with the std library
-runo: $(NAMEO)
-		./testo
+runo: 
+		$(CXX) $(CXXFLAGS) $(STDFLAG) main.cpp -o $(NAME)
+		./$(NAME)
 
 # Rule to remove all the object files.
 clean:
