@@ -3,9 +3,10 @@
 
 # include <iostream> // TODO remove
 # include <stdio.h>  // TODO remove
-# include <limits>
+# include <limits>	
 # include <exception>
 # include "iterator.hpp" 
+# include "iterator_traits.hpp"
 
 # define logn(x) std::cout << x << std::endl
 # define log(x) std::cout << x
@@ -13,20 +14,21 @@
 namespace ft
 {
 	template <typename vector>
-	struct vectorIterator //: ft::iterator
+	struct vectorIterator
 	{
 		public:
-		typedef typename	vector::value_type 	value_type;
-		typedef 			value_type			*pointer_type;
-		typedef 			value_type const 	*const_pointer;
-		typedef 			value_type			&reference_type;
-		typedef 			value_type const 	&const_reference;
-		typedef 			std::ptrdiff_t 		difference_type;
+		typedef typename vector::value_type 		value_type;
+		typedef value_type				*pointer;
+		typedef value_type const 		*const_pointer;
+		typedef value_type				&reference;
+		typedef value_type const 		&const_reference;
+		typedef std::ptrdiff_t 			difference_type;
+		typedef std::random_access_iterator_tag 	iterator_category;
 
 		public:
-		vectorIterator(pointer_type ptr) : m_ptr(ptr) {};
+		vectorIterator(pointer ptr) : m_ptr(ptr) {};
 
-		vectorIterator& operator++() { 
+		vectorIterator& operator++() {
 			m_ptr++;
 			return *this;
 		}
@@ -73,15 +75,15 @@ namespace ft
 		{
 			return (m_ptr - other.m_ptr);
 		}
-		reference_type operator[](int index)
+		reference operator[](int index)
 		{
 			return *(m_ptr + index);
 		}
-		pointer_type operator->()
+		pointer operator->()
 		{
 			return m_ptr;
 		}
-		reference_type operator*()
+		reference operator*()
 		{
 			return *m_ptr;
 		}
@@ -95,7 +97,7 @@ namespace ft
 		}
 
 		private:
-		pointer_type m_ptr;
+		pointer m_ptr;
 	};
 } // namespace ft
 

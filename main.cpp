@@ -257,18 +257,32 @@ void testIterators()
 	v.push_back(3);
 	assert(v[2] == 3);
 	PrintVector(v, "v");
+
 	title("begin");
 	logn("Begin value:");
 	logn(*v.begin());
 	logn("Begin + 1 value:");
 	logn(*(v.begin() + 1));
+
 	title("end");
 	logn("End - 1 value:");
 	logn(*(v.end() - 1));
 	logn("End - 2 value:");
 	logn(*(v.end() - 2));
-	chapterend("ITERATORS OK");
+	
+	title("rbegin");
+	logn("rbegin value:");
+	logn(*(v.rbegin()));
+	logn("rbegin + 1 value:");
+	logn(*(v.rbegin() + 1));
 
+	title("rend");
+	logn("rend - 1 value:");
+	logn(*(v.rend() - 1));
+	logn("rend - 2 value:");
+	logn(*(v.rend() - 2));
+	
+	chapterend("ITERATORS OK");
 }
 
 int main(int argc, char **argv)
@@ -279,7 +293,7 @@ int main(int argc, char **argv)
 	// testCapacity();
 	// testAccess();
 	// testModifiers();
-	testIterators();
+	// testIterators();
 
 	return 0;
 }

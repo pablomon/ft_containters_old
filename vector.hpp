@@ -6,7 +6,9 @@
 # include <limits>
 # include <exception>
 # include "vector_iterator.hpp"
-// # include "randIt.hpp"
+# include "reverse_iterator.hpp"
+# include "iterator.hpp"
+# include "iterator_traits.hpp"
 
 # define logn(x) std::cout << x << std::endl
 # define log(x) std::cout << x
@@ -29,12 +31,13 @@ namespace ft
 		typedef typename allocator_type::const_reference					const_reference;
 		typedef typename allocator_type::pointer 							pointer;
 		typedef typename allocator_type::const_pointer 						const_pointer;
-		typedef typename ft::vectorIterator<ft::vector<value_type> >		iterator;
-		typedef typename ft::vectorIterator<ft::vector<const value_type> >	const_iterator;
-		//typedef typename reverse_iterator
-		//typedef typename const_reverse_iterator
-		typedef std::ptrdiff_t								difference_type;
-		typedef typename allocator_type::size_type			size_type;
+		typedef ft::vectorIterator<vector> 			iterator;
+		typedef ft::vectorIterator<const value_type>	const_iterator;
+		typedef ft::reverse_iterator<iterator>			reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
+		typedef std::ptrdiff_t					difference_type;
+		typedef typename allocator_type::size_type		size_type;
+		typedef std::random_access_iterator_tag			iterator_category;
 
 		private:
 		/*
@@ -154,10 +157,10 @@ namespace ft
 		const_iterator begin() const { return const_iterator(m_data); }
 		iterator end() { return iterator(m_data + m_size); }
 		const_iterator end() const { return const_iterator(m_data + m_size); }
-		// reverse_iterator rbegin();
-		// const_reverse_iterator rbegin() const;
-		// reverse_iterator rend();
-		// const_reverse_iterator rend() const;
+		reverse_iterator rbegin() {	return (this->end()); }
+		const_reverse_iterator rbegin() const {	return (this->end()); }
+		reverse_iterator rend()	{ return (this->begin()); }
+		const_reverse_iterator rend() const	{ return (this->begin()); }
 
 		/*
 		 Capacity ------------------------------------------

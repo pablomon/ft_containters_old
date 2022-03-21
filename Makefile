@@ -6,7 +6,7 @@
 #    By: pmontese <pmontes@student.42madrid.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/08 23:23:47 by pmontese          #+#    #+#              #
-#    Updated: 2022/03/17 20:12:47 by pmontese         ###   ########.fr        #
+#    Updated: 2022/03/18 12:11:00 by pmontese         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 NAME	:= test
 
 # Sources and objects.
-HDRS	:= vector.hpp iterator.hpp vector_iterator.hpp iterator_traits.hpp
+HDRS	:= vector.hpp iterator.hpp vector_iterator.hpp iterator_traits.hpp reverse_iterator.hpp
 SRCS	:= main.cpp
 OBJS	:= $(SRCS:.cpp=.o)
 
