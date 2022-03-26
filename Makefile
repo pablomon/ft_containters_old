@@ -6,22 +6,24 @@
 #    By: pmontese <pmontes@student.42madrid.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/08 23:23:47 by pmontese          #+#    #+#              #
-#    Updated: 2022/03/18 12:11:00 by pmontese         ###   ########.fr        #
+#    Updated: 2022/03/26 18:14:20 by pmontese         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Name of the program.
-NAME	:= test
+NAME	:= main
 
 # Sources and objects.
-HDRS	:= vector.hpp iterator.hpp vector_iterator.hpp iterator_traits.hpp reverse_iterator.hpp
+HDRS	:=	containers/vector.hpp containers/vector_it.hpp \
+			utils/iterator_traits.hpp utils/reverse_iterator.hpp utils/enable_if.hpp utils/is_integral.hpp
+
 SRCS	:= main.cpp
 OBJS	:= $(SRCS:.cpp=.o)
 
 # Define all the compiling flags.
 CXX			:= clang++
 CXXFLAGS	:= -std=c++98 -Wall -Wextra #-Werror
-SANITIZEFLAGS	:= #-fsanitize=address -g
+SANITIZEFLAGS	:= -g -fsanitize=address
 STDFLAG		:= -D VECTOR=std::vector
 
 # Compile and create everything.
@@ -40,7 +42,7 @@ run: re
 		./$(NAME)
 
 # Rule to run with the std library
-runo: 
+runo: re
 		$(CXX) $(CXXFLAGS) $(STDFLAG) main.cpp -o $(NAME)
 		./$(NAME)
 

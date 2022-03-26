@@ -1,8 +1,12 @@
 #include <iostream>
 #include <assert.h>
 
-#include "vector.hpp"
+#include "containers/vector.hpp"
 #include <vector>
+#include <typeinfo>
+#include <time.h>
+#include <sstream>
+
 
 // logging
 #define red "\033[0;31m"
@@ -20,6 +24,10 @@
 # define VECTOR ft::vector
 #endif
 
+#ifndef TYPE
+# define TYPE std::string
+#endif
+
 template <typename T>
 void PrintVector(const VECTOR<T>& vector, std::string name)
 {
@@ -35,23 +43,25 @@ void testConstructors()
 	chapter("\nCONSTRUCTORS");
 	{
 		title("Empty constructor");
-		VECTOR<int> v = VECTOR<int>();
+		VECTOR<TYPE> v = VECTOR<TYPE>();
 		PrintVector(v, "v");
 	}
 	{
 		title("Fill constructor");
-		VECTOR<int> v = VECTOR<int>(4, 6);
-		assert(v[3] == 6);
+		VECTOR<TYPE> v = VECTOR<TYPE>(4, "abc");
+		assert(v[3] == "abc");
 		PrintVector(v, "v");
 	}
 	{
 		title("Range constructor");
-		VECTOR<int> vo = VECTOR<int>();
-		vo.push_back(11);
-		vo.push_back(22);
-		vo.push_back(33);
-		VECTOR<int> v = VECTOR<int>(vo.begin(), vo.end());
-		assert(v[2] == 33);
+		VECTOR<TYPE> vo = VECTOR<TYPE>();
+		vo.push_back("11");
+		vo.push_back("22");
+		vo.push_back("33");
+		PrintVector(vo, "vo");
+
+		VECTOR<TYPE> v = VECTOR<TYPE>(vo.begin(), vo.end());
+		assert(v[2] == "33");
 		PrintVector(v, "v");
 	}
 
@@ -63,16 +73,16 @@ void testAccess()
 	chapter("\nELEMENT ACCESS");
 
 	log("Create vector with values 1, 2, 3");
-	VECTOR<int> v;
-	v.push_back(1);
-	v.push_back(2);
-	v.push_back(3);
-	assert(v[2] == 3);
+	VECTOR<TYPE> v;
+	v.push_back("1");
+	v.push_back("2");
+	v.push_back("3");
+	assert(v[2] == "3");
 	PrintVector(v, "v");
 
 	title("Operator []");
 	log("Value at pos 2: ");
-	assert(v[2] == 3);
+	assert(v[2] == "3");
 	logn(v[2]);
 	log("Value at pos 100: ");
 	logn(v[100]);
@@ -81,7 +91,7 @@ void testAccess()
 	try
 	{
 		log("Value at pos 2: ");
-		assert(v[2] == 3);
+		assert(v[2] == "3");
 		logn(v.at(2));
 		log("Value at pos 100: ");
 		logn(v.at(100));
@@ -93,19 +103,19 @@ void testAccess()
 
 	title("Front & back");
 	log("Front: ");
-	assert(v.front() == 1);
+	assert(v.front() == "1");
 	logn(v.front());
 	log("Back: ");
-	assert(v.back() == 3);
+	assert(v.back() == "3");
 	logn(v.back());
 	logn("Removng elements 1 and 2");
 	v.pop_back();
 	v.pop_back();
 	log("Front: ");
-	assert(v.front() == 1);
+	assert(v.front() == "1");
 	logn(v.front());
 	log("Back: ");
-	assert(v.back() == 1);
+	assert(v.back() == "1");
 	logn(v.back());
 
 	chapterend("ACCESS OK");
@@ -115,71 +125,72 @@ void testModifiers()
 {
 	chapter("\nMODIFIERS");
 
-	VECTOR<int> v = VECTOR<int>();
+	VECTOR<TYPE> v = VECTOR<TYPE>();
 	PrintVector(v, "v");
 
 	title("push_back");
-	v.push_back(1);
-	v.push_back(2);
-	v.push_back(3);
-	assert(v[2] == 3);
+	v.push_back("1");
+	v.push_back("2");
+	v.push_back("3");
+	assert(v[2] == "3");
 	PrintVector(v, "v");
 
 	title("range assign");
 	logn("create v2");
-	VECTOR<int> v2 = VECTOR<int>(5, 42);
+	VECTOR<TYPE> v2 = VECTOR<TYPE>(5, "42");
 	PrintVector(v2, "v2");
 	logn("assign v to v2");
 	v2.assign(v.begin(), v.end());
-	assert(v2[2] == 3);
+	assert(v2[2] == "3");
 	PrintVector(v2, "v2");
 	title("fill assign");
-	v2.assign(6, 42);
-	assert(v2[5] == 42);
+	v2.assign(6, "42");
+	assert(v2[5] == "42");
 	PrintVector(v2, "v2");
 
 	title("pop back");
 	for (size_t i = 0; i < 6; i++)
 	{
+		logn(i);
 		v2.pop_back();
 	}
 	PrintVector(v2, "v2");
-	
+
 	title("Insert single element");
 	PrintVector(v, "v");
 	logn("Insert 42 at the beginnig + 2");
-	VECTOR<int>::iterator it = v.insert(v.begin() + 2, 42);
-	assert(v[2] == 42);
+	VECTOR<TYPE>::iterator it = v.insert(v.begin() + 2, "42");
+	assert(v[2] == "42");
 	logn(*it);
 	logn("Insert 42 at the end");
-	v.insert(v.end(), 42);
-	assert(v[4] == 42);
+	v.insert(v.end(), "42");
+	assert(v[4] == "42");
 	PrintVector(v, "v");
 
 	title("Insert fill");
 	logn("Insert  3 666s at the beginnig + 1");
-	v.insert(++v.begin(), 3, 66);
-	assert(v[1] == 66);
-	assert(v[3] == 66);
+	v.insert(++v.begin(), 3, "66");
+	assert(v[1] == "66");
+	assert(v[3] == "66");
 	PrintVector(v, "v");
 
 	title("Insert range");
 	log("Vector3:");
-	VECTOR<int> v3;
-	v3.push_back(10);
-	v3.push_back(20);
-	v3.push_back(30);
+	VECTOR<TYPE> v3;
+	v3.push_back("10");
+	v3.push_back("20");
+	v3.push_back("30");
 	PrintVector(v3, "v3");
 	logn("Insert vector3 into second position");
 	v.insert(v.begin() + 2, v3.begin(), v3.end());
-	assert(v[2] == 10);
-	assert(v[4] == 30);
+	assert(v[2] == "10");
+	assert(v[4] == "30");
 	PrintVector(v, "v");
 
 	title("Erase single");
 	logn("Erase vector v pos 2");
 	it = v.erase(v.begin() + 2);
-	assert(*it == 20);
+	assert(*it == "20");
 	log("return iterator value = ");
 	logn(*it);
 	PrintVector(v, "v");
@@ -187,7 +198,7 @@ void testModifiers()
 	title("Erase range");
 	logn("Erase everything in v except first and last");
 	it = v.erase(++v.begin(), --v.end());
-	assert(*it == 42);
+	assert(*it == "42");
 	log("return iterator value = ");
 	logn(*it);
 	PrintVector(v, "v");
@@ -199,11 +210,10 @@ void testModifiers()
 	PrintVector(v3, "v3");
 	logn("Swap vectors");
 	v.swap(v3);
-	assert(v[2] == 30);
-	assert(v3[1] == 42);
+	assert(v[2] == "30");
+	assert(v3[1] == "42");
 	PrintVector(v, "v");
 	PrintVector(v3, "v3");
-
 
 	title("\nClear");
 	v.clear();
@@ -216,11 +226,12 @@ void testModifiers()
 void testCapacity()
 {
 	chapter("\nCAPACITY");
-	VECTOR<int> v = VECTOR<int>();
-	v.push_back(1);
-	v.push_back(2);
-	v.push_back(3);
-	assert(v[2] == 3);
+	VECTOR<TYPE> v = VECTOR<TYPE>();
+	logn("hola");
+	v.push_back("1");
+	v.push_back("2");
+	v.push_back("3");
+	assert(v[2] == "3");
 	PrintVector(v, "v");
 
 	title("size");
@@ -232,7 +243,8 @@ void testCapacity()
 	title("resize");
 	logn("resize to 10 elements");
 	v.resize(10);
-	assert(v[9] == 0);
+	logn(v[9]);
+	assert(v[9] == "");
 	PrintVector(v, "v");
 	logn("resize to 2 elements");
 	v.resize(2);
@@ -251,11 +263,11 @@ void testIterators()
 {
 	chapter("\nITERATORS");
 	log("Create vector v with values 1, 2, 3");
-	VECTOR<int> v;
-	v.push_back(1);
-	v.push_back(2);
-	v.push_back(3);
-	assert(v[2] == 3);
+	VECTOR<TYPE> v;
+	v.push_back("a");
+	v.push_back("b");
+	v.push_back("c");
+	assert(v[2] == "c");
 	PrintVector(v, "v");
 
 	title("begin");
@@ -269,7 +281,7 @@ void testIterators()
 	logn(*(v.end() - 1));
 	logn("End - 2 value:");
 	logn(*(v.end() - 2));
-	
+
 	title("rbegin");
 	logn("rbegin value:");
 	logn(*(v.rbegin()));
@@ -281,19 +293,86 @@ void testIterators()
 	logn(*(v.rend() - 1));
 	logn("rend - 2 value:");
 	logn(*(v.rend() - 2));
-	
+
 	chapterend("ITERATORS OK");
 }
 
-int main(int argc, char **argv)
+template <typename T>
+std::string ToString(T val)
 {
-	if (argc )
+    std::stringstream stream;
+    stream << val;
+    return stream.str();
+}
+
+void speedTest()
+{
+	chapter("\nSpeed test");
+	title("Allocation");
+	logn("Create a vector with 10^6 strings using std");
+	clock_t t1, t2;
+	{
+		t1 = clock();
+		std::vector<std::string> v;
+		for (size_t i = 0; i < 1000000; i++)
+			v.push_back(ToString(i));
+		t2 = clock();
+		log("std total s = ");
+		logn((double)(t2 - t1) / CLOCKS_PER_SEC); 
+	}
+
+	{
+		t1 = clock();
+		ft::vector<std::string> v;
+		for (size_t i = 0; i < 1000000; i++)
+			v.push_back(ToString(i));
+		t2 = clock();
+		log("ft total s = ");
+		logn((double)(t2 - t1) / CLOCKS_PER_SEC); 
+	}
+
+	title("Access");
+	logn("Access 10^6 strings using std");
+	{
+		std::string s;
+		std::vector<std::string> v;
+		for (size_t i = 0; i < 1000000; i++)
+			v.push_back(ToString(i));
+		t1 = clock();
+		for (size_t i = 0; i < v.size(); i++)
+			s = v[i];
+		t2 = clock();
+		log("std total s = ");
+		logn((double)(t2 - t1) / CLOCKS_PER_SEC); 
+	}
+	{
+		std::string s;
+		std::vector<std::string> v;
+		for (size_t i = 0; i < 1000000; i++)
+			v.push_back(ToString(i));
+		t1 = clock();
+		for (size_t i = 0; i < v.size(); i++)
+			s = v[i];
+		t2 = clock();
+		log("ft total s = ");
+		logn((double)(t2 - t1) / CLOCKS_PER_SEC); 
+	}
+}
+
+void vector_test()
+{
 	chapter("\nT E S T I N G   F T _ V E C T O R");
 	// testConstructors();
 	// testCapacity();
 	// testAccess();
 	// testModifiers();
 	// testIterators();
+	speedTest();
+}
+
+int main(void)
+{
+	vector_test();
 
 	return 0;
 }
