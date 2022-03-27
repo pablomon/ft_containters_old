@@ -19,7 +19,10 @@ namespace ft
 	template <> struct is_integral<unsigned int> { static const bool value = true; };
 	template <> struct is_integral<unsigned long int> { static const bool value = true; };
 	template <> struct is_integral<unsigned long long int> { static const bool value = true; };
+#ifdef __APPLE__
+	template <> struct is_integral<char16_t> { static const bool value = true; };
+	template <> struct is_integral<char32_t> { static const bool value = true; };
+#endif
 }
-
 
 #endif // IS_INTEGRAL_HPP

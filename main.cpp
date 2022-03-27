@@ -307,14 +307,15 @@ std::string ToString(T val)
 
 void speedTest()
 {
+# define TEST_SIZE 10000000
 	chapter("\nSpeed test");
 	title("Allocation");
-	logn("Create a vector with 10^6 strings using std");
+	std::cout << "Create a vector with " << TEST_SIZE << " strings\n";
 	clock_t t1, t2;
 	{
 		t1 = clock();
 		std::vector<std::string> v;
-		for (size_t i = 0; i < 1000000; i++)
+		for (size_t i = 0; i < TEST_SIZE; i++)
 			v.push_back(ToString(i));
 		t2 = clock();
 		log("std total s = ");
@@ -324,7 +325,7 @@ void speedTest()
 	{
 		t1 = clock();
 		ft::vector<std::string> v;
-		for (size_t i = 0; i < 1000000; i++)
+		for (size_t i = 0; i < TEST_SIZE; i++)
 			v.push_back(ToString(i));
 		t2 = clock();
 		log("ft total s = ");
@@ -332,11 +333,11 @@ void speedTest()
 	}
 
 	title("Access");
-	logn("Access 10^6 strings using std");
+	std::cout << "Acess " << TEST_SIZE << " strings\n";
 	{
 		std::string s;
 		std::vector<std::string> v;
-		for (size_t i = 0; i < 1000000; i++)
+		for (size_t i = 0; i < TEST_SIZE; i++)
 			v.push_back(ToString(i));
 		t1 = clock();
 		for (size_t i = 0; i < v.size(); i++)
@@ -348,7 +349,7 @@ void speedTest()
 	{
 		std::string s;
 		std::vector<std::string> v;
-		for (size_t i = 0; i < 1000000; i++)
+		for (size_t i = 0; i < TEST_SIZE; i++)
 			v.push_back(ToString(i));
 		t1 = clock();
 		for (size_t i = 0; i < v.size(); i++)
