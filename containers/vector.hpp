@@ -371,7 +371,7 @@ namespace ft
 			m_alloc.destroy(m_data + dist);
 			if (dist != m_size - 1)
 			{
-				for (size_type i = dist; i < m_size; i++)
+				for (size_type i = dist; i < m_size - 1; i++)
 					m_data[i] = m_data[i + 1];
 			}
 			m_size--;

@@ -6,29 +6,34 @@
 #    By: pmontese <pmontes@student.42madrid.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/08 23:23:47 by pmontese          #+#    #+#              #
-#    Updated: 2022/03/27 11:25:27 by pmontese         ###   ########.fr        #
+#    Updated: 2022/03/28 22:12:32 by pmontese         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Name of the program.
 NAME	:= main
+NAMESTD := std_test
 
 # Sources and objects.
-HDRS	:=	containers/vector.hpp containers/vector_it.hpp \
+HDRS	:=	utils/utils.hpp tests/tests.hpp \
+			containers/vector.hpp containers/vector_it.hpp \
 			containers/stack.hpp \
 			utils/iterator_traits.hpp utils/reverse_iterator.hpp utils/enable_if.hpp utils/is_integral.hpp
 
-SRCS	:= main.cpp
-OBJS	:= $(SRCS:.cpp=.o)
+SRCS	:= 	main.cpp utils/utils.cpp \
+			tests/vector_tests.cpp tests/stack_tests.cpp
+OBJS	:= 	$(SRCS:.cpp=.o)
 
 # Define all the compiling flags.
 CXX			:= clang++
 CXXFLAGS	:= -std=c++98 -Wall -Wextra #-Werror
 SANITIZEFLAGS	:= -g -fsanitize=address
-STDFLAG		:= -D VECTOR=std::vector
+STDFLAG		:= -D STD='"STANDAR"'
 
 # Compile and create everything.
-all: $(NAME)
+all:
+	make ft
+	make std
 
 # Compile the program with the objects.
 $(NAME): $(OBJS) $(HDRS)
@@ -39,13 +44,12 @@ $(NAME): $(OBJS) $(HDRS)
 		$(CXX) $(CXXFLAGS) $(SANITIZEFLAGS) -o $@ -c $<
 
 # Rule to run the program.
-run: re
-		./$(NAME)
+ft:
+	$(CXX) $(CXXFLAGS) $(SANITIZEFLAGS) $(SRCS) -o $(NAME)
 
 # Rule to run with the std library
-runo: re
-		$(CXX) $(CXXFLAGS) $(STDFLAG) main.cpp -o $(NAME)
-		./$(NAME)
+std:
+	$(CXX) $(CXXFLAGS) $(SANITIZEFLAGS) $(STDFLAG) $(SRCS) -o $(NAMESTD)
 
 # Rule to remove all the object files.
 clean:
@@ -56,7 +60,7 @@ clean:
 # Rule to remove everything that has been created by the makefile.
 fclean: clean
 		@rm -f $(NAME)
-		@rm -f $(NAMEO)
+		@rm -f $(NAMESTD)
 		@echo "[INFO] $(NAME) removed!"
 
 # Rule to re-make everything.
