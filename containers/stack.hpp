@@ -14,7 +14,7 @@ namespace ft
 		 Member types -------------------------------------
 		*/
 		typedef  Container 						container_type;
-		typedef  typename Container::value_type 			value_type;
+		typedef  typename Container::value_type 		value_type;
 		typedef  typename Container::size_type 			size_type;
 		typedef  typename Container::reference 			reference;
 		typedef  typename Container::const_reference 	const_reference;
@@ -64,7 +64,7 @@ namespace ft
 	Relational operators -------------------------------------
 	*/
 	template <class T, class Container>
-	bool operator== (const stack<T,Container>& lhs, const stack<T,Container>& rhs)
+	bool operator== (const ft::stack<T,Container>& lhs, const ft::stack<T,Container>& rhs)
 	{
 		return lhs.m_container == rhs.m_container;
 	}

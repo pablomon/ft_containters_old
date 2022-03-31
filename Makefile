@@ -6,7 +6,7 @@
 #    By: pmontese <pmontes@student.42madrid.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/08 23:23:47 by pmontese          #+#    #+#              #
-#    Updated: 2022/03/28 22:12:32 by pmontese         ###   ########.fr        #
+#    Updated: 2022/03/29 13:09:56 by pmontese         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,9 @@ NAMESTD := std_test
 HDRS	:=	utils/utils.hpp tests/tests.hpp \
 			containers/vector.hpp containers/vector_it.hpp \
 			containers/stack.hpp \
-			utils/iterator_traits.hpp utils/reverse_iterator.hpp utils/enable_if.hpp utils/is_integral.hpp
+			utils/iterator_traits.hpp utils/reverse_iterator.hpp \
+			utils/enable_if.hpp utils/is_integral.hpp \
+			utils/lexicographical_compare.hpp
 
 SRCS	:= 	main.cpp utils/utils.cpp \
 			tests/vector_tests.cpp tests/stack_tests.cpp

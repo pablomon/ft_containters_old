@@ -2,8 +2,22 @@
 #include "../containers/vector.hpp"
 #include <vector>
 
+template <class T, class Alloc>
+void	cmp(const NAMESPACE::vector<T, Alloc> &lhs, const NAMESPACE::vector<T, Alloc> &rhs)
+{
+	static int i = 0;
+
+	std::cout << "############### [" << i++ << "] ###############"  << std::endl;
+	std::cout << "eq: " << (lhs == rhs);
+	std::cout << " | ne: " << (lhs != rhs) << std::endl;
+	std::cout << "lt: " << (lhs < rhs);
+	// std::cout << " | le: " << (lhs <= rhs) << std::endl;
+	// std::cout << "gt: " << (lhs >  rhs);
+	// std::cout << " | ge: " << (lhs >= rhs) << std::endl;
+}
+
 template <typename T>
-void PrintVector(const VECTOR<T>& vector, std::string name)
+void PrintVector(const NAMESPACE::vector<T>& vector, std::string name)
 {
 	std::cout << "  Vector " << name << ":\n";
 	std::cout << "  size = " << vector.size() << ", ";
@@ -12,29 +26,29 @@ void PrintVector(const VECTOR<T>& vector, std::string name)
 		std::cout << "  [" << i << "] = " << vector[i] << std::endl;
 }
 
-void testConstructors()
+void v_testConstructors()
 {
 	chapter("\nCONSTRUCTORS");
 	{
 		title("Empty constructor");
-		VECTOR<TYPE> v = VECTOR<TYPE>();
+		NAMESPACE::vector<TYPE> v = NAMESPACE::vector<TYPE>();
 		PrintVector(v, "v");
 	}
 	{
 		title("Fill constructor");
-		VECTOR<TYPE> v = VECTOR<TYPE>(4, "abc");
+		NAMESPACE::vector<TYPE> v = NAMESPACE::vector<TYPE>(4, "abc");
 		assert(v[3] == "abc");
 		PrintVector(v, "v");
 	}
 	{
 		title("Range constructor");
-		VECTOR<TYPE> vo = VECTOR<TYPE>();
+		NAMESPACE::vector<TYPE> vo = NAMESPACE::vector<TYPE>();
 		vo.push_back("11");
 		vo.push_back("22");
 		vo.push_back("33");
 		PrintVector(vo, "vo");
 
-		VECTOR<TYPE> v = VECTOR<TYPE>(vo.begin(), vo.end());
+		NAMESPACE::vector<TYPE> v = NAMESPACE::vector<TYPE>(vo.begin(), vo.end());
 		assert(v[2] == "33");
 		PrintVector(v, "v");
 	}
@@ -42,12 +56,12 @@ void testConstructors()
 	chapterend("CONSTRUCTORS OK");
 }
 
-void testAccess()
+void v_testAccess()
 {
 	chapter("\nELEMENT ACCESS");
 
 	log("Create vector with values 1, 2, 3");
-	VECTOR<TYPE> v;
+	NAMESPACE::vector<TYPE> v;
 	v.push_back("1");
 	v.push_back("2");
 	v.push_back("3");
@@ -95,11 +109,11 @@ void testAccess()
 	chapterend("ACCESS OK");
 }
 
-void testModifiers()
+void v_testModifiers()
 {
 	chapter("\nMODIFIERS");
 
-	VECTOR<TYPE> v = VECTOR<TYPE>();
+	NAMESPACE::vector<TYPE> v = NAMESPACE::vector<TYPE>();
 	PrintVector(v, "v");
 
 	title("push_back");
@@ -111,7 +125,7 @@ void testModifiers()
 
 	title("range assign");
 	logn("create v2");
-	VECTOR<TYPE> v2 = VECTOR<TYPE>(5, "42");
+	NAMESPACE::vector<TYPE> v2 = NAMESPACE::vector<TYPE>(5, "42");
 	PrintVector(v2, "v2");
 	logn("assign v to v2");
 	v2.assign(v.begin(), v.end());
@@ -133,7 +147,7 @@ void testModifiers()
 	title("Insert single element");
 	PrintVector(v, "v");
 	logn("Insert 42 at the beginnig + 2");
-	VECTOR<TYPE>::iterator it = v.insert(v.begin() + 2, "42");
+	NAMESPACE::vector<TYPE>::iterator it = v.insert(v.begin() + 2, "42");
 	assert(v[2] == "42");
 	logn(*it);
 	logn("Insert 42 at the end");
@@ -150,7 +164,7 @@ void testModifiers()
 
 	title("Insert range");
 	log("Vector3:");
-	VECTOR<TYPE> v3;
+	NAMESPACE::vector<TYPE> v3;
 	v3.push_back("10");
 	v3.push_back("20");
 	v3.push_back("30");
@@ -197,10 +211,10 @@ void testModifiers()
 	chapterend("MODIFIERS OK");
 }
 
-void testCapacity()
+void v_testCapacity()
 {
 	chapter("\nCAPACITY");
-	VECTOR<TYPE> v = VECTOR<TYPE>();
+	NAMESPACE::vector<TYPE> v = NAMESPACE::vector<TYPE>();
 	logn("hola");
 	v.push_back("1");
 	v.push_back("2");
@@ -233,11 +247,11 @@ void testCapacity()
 	chapterend("\nCAPACITY OK");
 }
 
-void testIterators()
+void v_testIterators()
 {
 	chapter("\nITERATORS");
 	log("Create vector v with values 1, 2, 3");
-	VECTOR<TYPE> v;
+	NAMESPACE::vector<TYPE> v;
 	v.push_back("a");
 	v.push_back("b");
 	v.push_back("c");
@@ -246,38 +260,71 @@ void testIterators()
 
 	title("begin");
 	logn("Begin value:");
-	logn(*v.begin());
+	NAMESPACE::vector<TYPE>::iterator it = v.begin();
+	logn(*it);
+	assert(*it == "a");
 	logn("Begin + 1 value:");
+	assert(*(v.begin() + 1) == "b");
 	logn(*(v.begin() + 1));
-
+	
 	title("end");
 	logn("End - 1 value:");
+	assert(*(v.end() - 1) == "c");
 	logn(*(v.end() - 1));
 	logn("End - 2 value:");
+	assert(*(v.end() - 2) == "b");
 	logn(*(v.end() - 2));
 
 	title("rbegin");
 	logn("rbegin value:");
+	assert(*(v.rbegin()) == "c");
 	logn(*(v.rbegin()));
 	logn("rbegin + 1 value:");
 	logn(*(v.rbegin() + 1));
+	assert(*(v.rbegin() + 1) == "b");
 
 	title("rend");
 	logn("rend - 1 value:");
+	assert(*(v.rend() - 1) == "a");
 	logn(*(v.rend() - 1));
 	logn("rend - 2 value:");
+	assert(*(v.rend() - 2) == "b");
 	logn(*(v.rend() - 2));
 
 	chapterend("ITERATORS OK");
 }
 
-void speedTest()
+void v_relational_operators()
+{
+	NAMESPACE::vector<TYPE> vct(4);
+	NAMESPACE::vector<TYPE> vct2(4);
+
+	cmp(vct, vct);  // 0
+	// cmp(vct, vct2); // 1
+
+	// vct2.resize(10);
+
+	// cmp(vct, vct2); // 2
+	// cmp(vct2, vct); // 3
+
+	// vct[2] = 42;
+
+	// cmp(vct, vct2); // 4
+	// cmp(vct2, vct); // 5
+
+	// swap(vct, vct2);
+
+	// cmp(vct, vct2); // 6
+	// cmp(vct2, vct); // 7	
+}
+
+void v_speedTest()	
 {
 # define TEST_SIZE 10000000
 	chapter("\nSpeed test");
 	title("Allocation");
 	std::cout << "Create a vector with " << TEST_SIZE << " strings\n";
-	VECTOR<std::string> v;
+	NAMESPACE::vector<std::string> v;
 	Timer();
 	for (size_t i = 0; i < TEST_SIZE; i++)
 		v.push_back(ToString(i));
@@ -297,10 +344,11 @@ void speedTest()
 void vector_tests()
 {
 	chapter("\nT E S T I N G   V E C T O R");
-	testConstructors();
-	testCapacity();
-	testAccess();
-	testModifiers();
-	testIterators();
-	speedTest();
+	// v_testConstructors();
+	// v_testCapacity();
+	// v_testAccess();
+	// v_testModifiers();
+	v_testIterators();
+	// v_relational_operators();
+	// v_speedTest();
 }

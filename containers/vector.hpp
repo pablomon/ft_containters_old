@@ -10,6 +10,7 @@
 # include "../utils/iterator_traits.hpp"
 # include "../utils/enable_if.hpp"
 # include "../utils/is_integral.hpp"
+# include "../utils/lexicographical_compare.hpp"
 
 namespace ft
 {
@@ -22,16 +23,16 @@ namespace ft
 		*/
 		typedef T															value_type;
 		typedef Alloc														allocator_type;
+		typedef typename allocator_type::size_type		size_type;
+		typedef std::ptrdiff_t							difference_type;
 		typedef typename allocator_type::reference							reference;
 		typedef typename allocator_type::const_reference					const_reference;
 		typedef typename allocator_type::pointer 							pointer;
 		typedef typename allocator_type::const_pointer 						const_pointer;
-		typedef ft::vectorIterator<vector> 			iterator;
+		typedef ft::vectorIterator<vector> 				iterator;
 		typedef ft::vectorIterator<const value_type>	const_iterator;
 		typedef ft::reverse_iterator<iterator>			reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
-		typedef std::ptrdiff_t					difference_type;
-		typedef typename allocator_type::size_type		size_type;
 		typedef std::random_access_iterator_tag			iterator_category;
 
 		private:
@@ -147,20 +148,20 @@ namespace ft
 		vector &operator= (const vector& other)
 		{
 			// logn("OP = called");
-			vector newVector;
-			newVector.m_alloc = other.m_alloc;
-			newVector.m_alloc = other.m_alloc;
-			newVector.m_size = other.m_size;
-			newVector.m_capacity = other.m_capacity;
-			newVector.m_data = m_alloc.allocate(m_capacity);
-			for(size_t i=0; i<m_size; i++)
+			if (this != &other)
 			{
-				newVector.m_alloc.construct(newVector.m_data + i, other.m_data[i]);
+				vector newVector;
+				newVector.m_alloc = other.m_alloc;
+				newVector.m_alloc = other.m_alloc;
+				newVector.m_size = other.m_size;
+				newVector.m_capacity = other.m_capacity;
+				newVector.m_data = m_alloc.allocate(m_capacity);
+				for(size_t i=0; i<m_size; i++)
+				{
+					newVector.m_alloc.construct(newVector.m_data + i, other.m_data[i]);
+				}
 			}
-			return newVector;
-			// if (other == *this)
-			// 	return *this;
-			// return this->vector(other);
+			return *this;
 		}
 
 		/*
@@ -396,17 +397,17 @@ namespace ft
 			return iterator(m_data + dist);
 		}
 
-		void swap (vector& x)
+		void swap (vector& other)
 		{
 			pointer tp = m_data;
 			size_t ts = m_size;
 			size_t tc = m_capacity;
-			m_data = x.m_data;
-			m_size = x.m_size;
-			m_capacity = x.m_capacity;
-			x.m_data = tp;
-			x.m_size = ts;
-			x.m_capacity = tc;
+			m_data = other.m_data;
+			m_size = other.m_size;
+			m_capacity = other.m_capacity;
+			other.m_data = tp;
+			other.m_size = ts;
+			other.m_capacity = tc;
 		}
 
 		void clear()
@@ -425,6 +426,61 @@ namespace ft
 			// logn("Clear finished");
 		}
 	};
+	
+	/*
+	Non member functions -------------------------------------
+	*/
+	template< typename T, class Allocator>
+	bool operator==( const ft::vector<T, Allocator> & lhs,  const ft::vector<T, Allocator> & rhs )
+	{
+		if (lhs.size() != rhs.size())
+			return false;
+		for (size_t i = 0; i < lhs.size(); i++)
+		{
+			if (lhs[i] != rhs[i])
+				return false;
+		}
+		
+		return true;
+	}
+
+	template< typename T, class Allocator >
+	bool operator!=( const ft::vector<T, Allocator> & lhs,  const ft::vector<T, Allocator> & rhs )
+	{
+		return !( lhs == rhs );
+	}
+
+	template <typename T, class Allocator>
+	bool operator<( const ft::vector<T, Allocator> & lhs,  const ft::vector<T, Allocator> & rhs )
+	{
+		typename ft::vector<T>::iterator it = lhs.begin();
+		return true;
+
+		// return ft::lexicographical_compare( lhs.begin(), lhs.end(), rhs.begin(), rhs.end() );
+	}
+	template <typename T, class Allocator>
+	bool operator>( const ft::vector<T, Allocator> & lhs,  const ft::vector<T, Allocator> & rhs )
+	{
+		return  rhs < lhs;
+	}
+
+	template <typename T, class Allocator>
+	bool operator>=( const ft::vector<T, Allocator> & lhs,  const ft::vector<T, Allocator> & rhs )
+	{
+		return !(lhs < rhs);
+	}
+
+	template <typename T, class Allocator>
+	bool operator<=( const ft::vector<T, Allocator> & lhs,  const ft::vector<T, Allocator> & rhs )
+	{
+		return !(rhs < lhs);
+	}
+
+	template <typename T, class Allocator>
+	void swap ( const ft::vector<T, Allocator> & lhs,  const ft::vector<T, Allocator> & rhs )
+	{
+		lhs.swap( rhs );
+	}
 
 } // ft namespace
 

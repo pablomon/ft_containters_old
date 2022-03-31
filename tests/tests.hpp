@@ -8,11 +8,9 @@
 
 // types
 #ifndef STD
-# define VECTOR ft::vector
-# define STACK ft::stack
+# define NAMESPACE ft
 #else
-# define VECTOR std::vector
-# define STACK std::stack
+# define NAMESPACE std
 #endif
 
 #ifndef TYPE

@@ -11,7 +11,7 @@ int main(int argc, char **argv)
 {
 	std::cout << "Using " << STD << " containers" << std::endl;
 
-	stack_tests();
+	vector_tests();
 
 	if (argc == 1)
 	{
@@ -25,17 +25,6 @@ int main(int argc, char **argv)
 		stack_tests();
 	else
 		std::cout << "Use v(ector), s(tack) or m(ap)" << std::endl;
-	// ft::stack<int> s1;
-	// s1.push(1);
-	// s1.push(2);
-	// s1.push(3);
-	// logn(s1.top());
-	// s1.pop();
-	// logn(s1.top());
-	// s1.pop();
-	// logn(s1.top());
-	// s1.pop();
-	// logn(s1.top());
 
 
 	return 0;
