@@ -4,17 +4,25 @@
 #include <vector>
 
 template <class T, class Alloc>
-void	cmp(const NAMESPACE::vector<T, Alloc> &lhs, const NAMESPACE::vector<T, Alloc> &rhs)
+int	cmp(const NAMESPACE::vector<T, Alloc> &lhs, const NAMESPACE::vector<T, Alloc> &rhs)
 {
-	static int i = 0;
-
-	std::cout << "############### [" << i++ << "] ###############"  << std::endl;
+	int res = 0;
+	std::cout << "=============\n";
 	std::cout << "eq: " << (lhs == rhs);
+	res += (lhs == rhs); res = res << 1;
 	std::cout << " | ne: " << (lhs != rhs) << std::endl;
+	res += (lhs != rhs); res = res << 1;
 	std::cout << "lt: " << (lhs < rhs);
-	// std::cout << " | le: " << (lhs <= rhs) << std::endl;
-	// std::cout << "gt: " << (lhs >  rhs);
-	// std::cout << " | ge: " << (lhs >= rhs) << std::endl;
+	res += (lhs < rhs); res = res << 1;
+	std::cout << " | le: " << (lhs <= rhs) << std::endl;
+	res += (lhs <= rhs); res = res << 1;
+	std::cout << "gt: " << (lhs >  rhs);
+	res += (lhs > rhs); res = res << 1;
+	std::cout << " | ge: " << (lhs >= rhs) << std::endl;
+	res += (lhs >= rhs); res = res << 1;
+	std::cout << "=============\n";
+	std::cout << "res = " << res << "\n";
+	return res;
 }
 
 template <typename T>
@@ -297,26 +305,55 @@ void v_testIterators()
 
 void v_relational_operators()
 {
-	NAMESPACE::vector<TYPE> vct(4);
-	NAMESPACE::vector<TYPE> vct2(4);
+	chapter("\nRelational operators");
+	NAMESPACE::vector<TYPE> v1(4);
+	NAMESPACE::vector<TYPE> v2(4);
 
-	cmp(vct, vct);  // 0
-	cmp(vct, vct2); // 1
+	int res;
+	PrintVector(v1, "v1");
+	PrintVector(v2, "v2");
+	title("Comparison to itself");
+	logn("v1 VS v1");
+	res = cmp(v1, v1);
+	assert(res = 74);
+	
+	title("Comparison to an equal vector");
+	logn("v1 VS v2");
+	res = cmp(v1, v2);
+	assert(res = 74);
 
-	vct2.resize(10);
+	title("Comparison to a different sized vector");
+	logn("Resize v2 to 10\n");
+	v2.resize(10);
+	logn("v1 VS v2");
+	res = cmp(v1, v2);
+	assert(res = 56);
+	logn("v2 VS v1");
+	res = cmp(v2, v1);
+	assert(res = 38);
 
-	cmp(vct, vct2); // 2
-	cmp(vct2, vct); // 3
+	title("Comparison to a vector with different contents");
+	logn("Set v1[2] to 42\n");
+	v1[2] = 42;
+	PrintVector(v1, "v1");
+	logn("\nv1 VS v2");
+	res = cmp(v1, v2);
+	assert(res = 38);
+	logn("v2 VS v1");
+	res = cmp(v2, v1);
+	assert(res = 56);
 
-	vct[2] = 42;
+	title("Swap");
+	logn("Swap v1 and v2\n");
+	swap(v1, v2);
+	logn("v1 VS v2");
+	res = cmp(v1, v2);
+	assert(res = 56);
+	logn("v2 VS v1");
+	res = cmp(v2, v1);
+	assert(res = 38);
 
-	cmp(vct, vct2); // 4
-	cmp(vct2, vct); // 5
-
-	swap(vct, vct2);
-
-	cmp(vct, vct2); // 6
-	cmp(vct2, vct); // 7	
+	chapterend("RELATIONAL OPERATORS OK");
 }
 
 void v_speedTest()	
@@ -345,11 +382,11 @@ void v_speedTest()
 void vector_tests()
 {
 	chapter("\nT E S T I N G   V E C T O R");
-	// v_testConstructors();
-	// v_testCapacity();
-	// v_testAccess();
-	// v_testModifiers();
-	// v_testIterators();
+	v_testConstructors();
+	v_testCapacity();
+	v_testAccess();
+	v_testModifiers();
+	v_testIterators();
 	v_relational_operators();
-	// v_speedTest();
+	v_speedTest();
 }

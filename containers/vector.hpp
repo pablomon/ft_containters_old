@@ -450,7 +450,6 @@ namespace ft
 		return !( lhs == rhs );
 	}
 
-
 	template <typename T, class Allocator>
 	bool operator<( const ft::vector<T, Allocator> & lhs,  const ft::vector<T, Allocator> & rhs )
 	{
@@ -475,7 +474,7 @@ namespace ft
 	}
 
 	template <typename T, class Allocator>
-	void swap ( const ft::vector<T, Allocator> & lhs,  const ft::vector<T, Allocator> & rhs )
+	void swap ( ft::vector<T, Allocator> & lhs,  ft::vector<T, Allocator> & rhs )
 	{
 		lhs.swap( rhs );
 	}
