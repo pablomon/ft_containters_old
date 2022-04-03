@@ -6,7 +6,7 @@
 #    By: pmontese <pmontes@student.42madrid.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/08 23:23:47 by pmontese          #+#    #+#              #
-#    Updated: 2022/03/29 13:09:56 by pmontese         ###   ########.fr        #
+#    Updated: 2022/04/03 11:54:13 by pmontese         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,12 +15,12 @@ NAME	:= main
 NAMESTD := std_test
 
 # Sources and objects.
-HDRS	:=	utils/utils.hpp tests/tests.hpp \
-			containers/vector.hpp containers/vector_it.hpp \
-			containers/stack.hpp \
-			utils/iterator_traits.hpp utils/reverse_iterator.hpp \
-			utils/enable_if.hpp utils/is_integral.hpp \
-			utils/lexicographical_compare.hpp
+# HDRS	:=	utils/utils.hpp tests/tests.hpp \
+# 			containers/vector.hpp containers/vector_it.hpp \
+# 			containers/stack.hpp \
+# 			utils/iterator_traits.hpp utils/reverse_iterator.hpp \
+# 			utils/enable_if.hpp utils/is_integral.hpp \
+# 			utils/lexicographical_compare.hpp
 
 SRCS	:= 	main.cpp utils/utils.cpp \
 			tests/vector_tests.cpp tests/stack_tests.cpp
@@ -28,7 +28,7 @@ OBJS	:= 	$(SRCS:.cpp=.o)
 
 # Define all the compiling flags.
 CXX			:= clang++
-CXXFLAGS	:= -std=c++98 -Wall -Wextra #-Werror
+CXXFLAGS	:= -Wall -Wextra -std=c++98 #-Werror
 SANITIZEFLAGS	:= -g -fsanitize=address
 STDFLAG		:= -D STD='"STANDAR"'
 
@@ -38,7 +38,7 @@ all:
 	make std
 
 # Compile the program with the objects.
-$(NAME): $(OBJS) $(HDRS)
+$(NAME): $(OBJS) #$(HDRS)
 		@$(CXX) $(OBJS) -o $@
 
 # This won't run if the source files don't exist or are not modified.

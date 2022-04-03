@@ -12,11 +12,11 @@
 
 namespace ft
 {
-	template <typename vector>
+	template <typename T>
 	struct vectorIterator
 	{
 		public:
-		typedef typename vector::value_type 		value_type;
+		typedef T						value_type;
 		typedef value_type				*pointer;
 		typedef value_type const 		*const_pointer;
 		typedef value_type				&reference;

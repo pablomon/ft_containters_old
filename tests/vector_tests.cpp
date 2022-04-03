@@ -1,5 +1,6 @@
 #include "tests.hpp"
 #include "../containers/vector.hpp"
+// #include "../Vector.hpp"
 #include <vector>
 
 template <class T, class Alloc>
@@ -300,22 +301,22 @@ void v_relational_operators()
 	NAMESPACE::vector<TYPE> vct2(4);
 
 	cmp(vct, vct);  // 0
-	// cmp(vct, vct2); // 1
+	cmp(vct, vct2); // 1
 
-	// vct2.resize(10);
+	vct2.resize(10);
 
-	// cmp(vct, vct2); // 2
-	// cmp(vct2, vct); // 3
+	cmp(vct, vct2); // 2
+	cmp(vct2, vct); // 3
 
-	// vct[2] = 42;
+	vct[2] = 42;
 
-	// cmp(vct, vct2); // 4
-	// cmp(vct2, vct); // 5
+	cmp(vct, vct2); // 4
+	cmp(vct2, vct); // 5
 
-	// swap(vct, vct2);
+	swap(vct, vct2);
 
-	// cmp(vct, vct2); // 6
-	// cmp(vct2, vct); // 7	
+	cmp(vct, vct2); // 6
+	cmp(vct2, vct); // 7	
 }
 
 void v_speedTest()	
@@ -348,7 +349,7 @@ void vector_tests()
 	// v_testCapacity();
 	// v_testAccess();
 	// v_testModifiers();
-	v_testIterators();
-	// v_relational_operators();
+	// v_testIterators();
+	v_relational_operators();
 	// v_speedTest();
 }
