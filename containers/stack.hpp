@@ -13,7 +13,7 @@ namespace ft
 		/*
 		 Member types -------------------------------------
 		*/
-		typedef  Container 						container_type;
+		typedef  Container 								container_type;
 		typedef  typename Container::value_type 		value_type;
 		typedef  typename Container::size_type 			size_type;
 		typedef  typename Container::reference 			reference;
@@ -52,12 +52,18 @@ namespace ft
 		/*
 		 Friends so they can access private members
 		*/
-		friend bool operator== (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
-		friend bool operator!= (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
-		friend bool operator<  (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
-		friend bool operator<= (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
-		friend bool operator>  (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
-		friend bool operator>= (const stack<T,Container>& lhs, const stack<T,Container>& rhs);
+		template <class T1, class Container1>
+		friend bool operator== (const stack<T1,Container1>& lhs, const stack<T1,Container1>& rhs);
+		template <class T1, class Container1>
+		friend bool operator!= (const stack<T1,Container1>& lhs, const stack<T1,Container1>& rhs);
+		template <class T1, class Container1>
+		friend bool operator<  (const stack<T1,Container1>& lhs, const stack<T1,Container1>& rhs);
+		template <class T1, class Container1>
+		friend bool operator<= (const stack<T1,Container1>& lhs, const stack<T1,Container1>& rhs);
+		template <class T1, class Container1>
+		friend bool operator>  (const stack<T1,Container1>& lhs, const stack<T1,Container1>& rhs);
+		template <class T1, class Container1>
+		friend bool operator>= (const stack<T1,Container1>& lhs, const stack<T1,Container1>& rhs);
 	};
 
 	/*

@@ -1,6 +1,5 @@
 #include "tests.hpp"
 #include "../containers/vector.hpp"
-// #include "../Vector.hpp"
 #include <vector>
 
 template <class T, class Alloc>

@@ -4,17 +4,25 @@
 #include <iomanip>
 
 template <class T_STACK>
-void	cmp(const T_STACK &lhs, const T_STACK &rhs)
+int	cmp(const T_STACK &lhs, const T_STACK &rhs)
 {
-	static int i = 0;
-
-	std::cout << "############### [" << i++ << "] ###############"  << std::endl;
+	int res = 0;
+	std::cout << "=============\n";
 	std::cout << "eq: " << (lhs == rhs);
-	// std::cout << " | ne: " << (lhs != rhs) << std::endl;
-	// std::cout << "lt: " << (lhs <  rhs) 
-	// std::cout << " | le: " << (lhs <= rhs) << std::endl;
-	// std::cout << "gt: " << (lhs >  rhs) 
-	// std::cout << " | ge: " << (lhs >= rhs) << std::endl;
+	res += (lhs == rhs); res = res << 1;
+	std::cout << " | ne: " << (lhs != rhs) << std::endl;
+	res += (lhs != rhs); res = res << 1;
+	std::cout << "lt: " << (lhs < rhs);
+	res += (lhs < rhs); res = res << 1;
+	std::cout << " | le: " << (lhs <= rhs) << std::endl;
+	res += (lhs <= rhs); res = res << 1;
+	std::cout << "gt: " << (lhs >  rhs);
+	res += (lhs > rhs); res = res << 1;
+	std::cout << " | ge: " << (lhs >= rhs) << std::endl;
+	res += (lhs >= rhs); res = res << 1;
+	std::cout << "=============\n";
+	std::cout << "res = " << res << "\n\n";
+	return res;
 }
 
 template <typename T>
@@ -41,6 +49,7 @@ void PrintStack(NAMESPACE::stack<T>& stk, std::string name = "s")
 		saveStack.pop();
 		i++;
 	}
+	std::cout << std::endl;
 }
 
 void s_default_copy()
@@ -68,6 +77,8 @@ void s_default_copy()
 	stk.push("6");
 
 	PrintStack(stk);
+
+	chapterend("DEFAULT COPY OK");
 }
 
 void s_default_container()
@@ -90,49 +101,66 @@ void s_default_container()
 	stk.pop();
 
 	PrintStack(stk);
+
+	chapterend("DEFAULT CONTAINER OK");
 }
 
 void s_relational_operators()
 {
-	// NAMESPACE::stack<TYPE>::container_type	ctnr;
+	chapter("\nRelational operators");
+	NAMESPACE::stack<TYPE>::container_type	ctnr;
 
-	// ctnr.push_back("21");
-	// ctnr.push_back("42");
-	// ctnr.push_back("1337");
-	// ctnr.push_back("19");
-	// ctnr.push_back("0");
-	// ctnr.push_back("183792");
+	int res;
+	ctnr.push_back("1");
+	ctnr.push_back("2");
+	ctnr.push_back("3");
 
-	// NAMESPACE::stack<TYPE> stck(ctnr);
-	// NAMESPACE::stack<TYPE> stck2(ctnr);
+	NAMESPACE::stack<TYPE> stk1(ctnr);
 
-	// bool res = stck == stck2 ? true : false;
-	// std::cout << res << std::endl;
-	// cmp(stck, stck);  // 0
-	// cmp(stck, stck2); // 1
+	PrintStack(stk1, "stack1");
+	title("Comparison to itself");
+	logn("stack1 VS stack1");
+	res = cmp(stk1, stk1);
+	assert(res = 74);
 
-	// stck2.push("60");
-	// stck2.push("61");
-	// stck2.push("62");
+	title("Comparison to an equal stack");
+	NAMESPACE::stack<TYPE> stk2(ctnr);
+	PrintStack(stk2, "stack2");
+	logn("stack1 VS stack2");
+	res = cmp(stk1, stk2);
+	assert(res = 74);
 
-	// cmp(stck, stck2); // 2
-	// cmp(stck2, stck); // 3
+	title("Comparison to a different stack");
+	stk2.push("60");
+	stk2.push("61");
+	stk2.push("62");
+	PrintStack(stk2, "stack2");
+	logn("stack1 VS stack2");
+	res = cmp(stk1, stk2);
+	assert(res = 56);
 
-	// stck.push("42");
+	logn("stack2 VS stack1");
+	cmp(stk2, stk1); 
+	assert(res = 38);
 
-	// cmp(stck, stck2); // 4
-	// cmp(stck2, stck); // 5
+	logn("Modifying stack1");
+	stk1.push("42");
+	PrintStack(stk1, "stack1");
 
-	// stck.push("100");
+	logn("stack1 VS stack2");
+	res = cmp(stk1, stk2); 
+	assert(res = 56);
+	logn("stack2 VS stack1");
+	res = cmp(stk2, stk1); 
+	assert(res = 38);
 
-	// cmp(stck, stck2); // 6
-	// cmp(stck2, stck); // 7
+	chapterend("RELATIONAL OPERATORS OK");
 }
 
 void stack_tests()
 {
 	chapter("\nT E S T I N G   S T A C K");
-	// default_container();
-	// default_copy();
+	s_default_container();
+	s_default_copy();
 	s_relational_operators();
 }

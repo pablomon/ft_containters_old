@@ -11,7 +11,7 @@ int main(int argc, char **argv)
 {
 	std::cout << "Using " << STD << " containers" << std::endl;
 
-	vector_tests();
+	stack_tests();
 
 	if (argc == 1)
 	{
