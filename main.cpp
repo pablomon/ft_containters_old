@@ -26,6 +26,5 @@ int main(int argc, char **argv)
 	else
 		std::cout << "Use v(ector), s(tack) or m(ap)" << std::endl;
 
-
 	return 0;
 }

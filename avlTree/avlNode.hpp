@@ -2,86 +2,86 @@
 #define AVL_NODE_HPP
 
 #include <stdlib.h>
+#include "../utils/pair.hpp"
 
 template <class K, class V>
 class AVLNode
 {
-private:
-	K key;
-	V value;
+public:
+	typedef AVLNode<K,V>		node_type;
+	typedef node_type			*node_pointer;
+	typedef ft::pair<K,V>		content_type;
+
+	content_type content;
 	int height;
-	AVLNode<K, V> *left_child;
-	AVLNode<K, V> *parent;
-	AVLNode<K, V> *right_child;
+	node_pointer left;
+	node_pointer parent;
+	node_pointer right;
 
 public:
-	AVLNode(K key, V value)
+	AVLNode(content_type pair)
 	{
-		this->key = key;
-		this->value = value;
+		this->content = pair;
 		height = 0;
 		parent = NULL;
-		left_child = NULL;
-		right_child = NULL;
+		left = NULL;
+		right = NULL;
 	}
 
 	int getBalance()
 	{
 		int result;
-		if (left_child == NULL)
+		if (left == NULL)
 		{
-			if (right_child == NULL)
+			if (right == NULL)
 				result = 0;
 			else
-				result = -right_child->height - 1;
+				result = -right->height - 1;
 		}
-		else if (right_child == NULL)
-			result = left_child->height + 1;
+		else if (right == NULL)
+			result = left->height + 1;
 		else
-			result = left_child->height - right_child->height;
+			result = left->height - right->height;
 		return result;
 	}
 
-	K getKey() { return key; }
-	V getValue() { return value; }
 	int getHeight() { return height; }
-	AVLNode<K, V> *getLeftChild() { return left_child; }
-	AVLNode<K, V> *getParent() { return parent; }
-	AVLNode<K, V> *getRightChild() { return right_child; }
 	void removeParent() { parent = NULL; }
-	AVLNode<K, V> *setLeftChild(AVLNode<K, V> *newLeft)
+	node_pointer setLeft(node_pointer newLeft)
 	{
 		if (newLeft != NULL)
 			newLeft->parent = this;
-		left_child = newLeft;
+		left = newLeft;
 		updateHeight();
-		return left_child;
+		return left;
 	}
-	AVLNode<K, V> *setRightChild(AVLNode<K, V> *newRight)
+	node_pointer setRight(node_pointer newRight)
 	{
 		if (newRight != NULL)
 			newRight->parent = this;
-		right_child = newRight;
+		right = newRight;
 		updateHeight();
-		return right_child;
+		return right;
 	}
+
 	int updateHeight()
 	{
-		if (left_child == NULL)
+		if (left == NULL)
 		{
-			if (right_child == NULL)
+			if (right == NULL)
 				height = 0;
 			else
-				height = right_child->height + 1;
+				height = right->height + 1;
 		}
-		else if (right_child == NULL)
-			height = left_child->height + 1;
-		else if (left_child->height > right_child->height)
-			height = left_child->height + 1;
+		else if (right == NULL)
+			height = left->height + 1;
+		else if (left->height > right->height)
+			height = left->height + 1;
 		else
-			height = right_child->height + 1;
+			height = right->height + 1;
 		return height;
 	}
+
 };
 
 #endif // AVL_NODE_HPP

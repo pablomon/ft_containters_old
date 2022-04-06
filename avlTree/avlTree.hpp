@@ -7,12 +7,19 @@
 #include <stdlib.h>
 
 #include "avlNode.hpp"
+#include "avlIterator.hpp"
+#include "../utils/pair.hpp"
 
 template <typename K, typename V>
 class AVLTree
 {
-private:
-	AVLNode<K, V> *root;
+public:
+	typedef AVLNode<K,V>	node_type;
+	typedef node_type		*node_pointer;
+	typedef avlIterator<node_type, ft::pair<K,V> >	iterator;
+	
+	
+	node_pointer root = NULL;
 
 private:
 	void balanceAtNode(AVLNode<K, V> *n)
@@ -20,14 +27,14 @@ private:
 		int bal = n->getBalance();
 		if (bal > 1)
 		{
-			if (n->getLeftChild()->getBalance() < 0)
-				rotateLeft(n->getLeftChild());
+			if (n->left->getBalance() < 0)
+				rotateLeft(n->left);
 			rotateRight(n);
 		}
 		else if (bal < -1)
 		{
-			if (n->getRightChild()->getBalance() > 0)
-				rotateRight(n->getRightChild());
+			if (n->right->getBalance() > 0)
+				rotateRight(n->right);
 			rotateLeft(n);
 		}
 	}
@@ -38,22 +45,21 @@ private:
 			left,
 			right
 		} side;
-		AVLNode<K, V> *p = n->getParent();
-		if (p != NULL && p->getLeftChild() == n)
+		AVLNode<K, V> *p = n->parent;
+		if (p != NULL && p->left == n)
 			side = left;
 		else
 			side = right;
-		AVLNode<K, V> *temp = n->getRightChild();
-		n->setRightChild(temp->getLeftChild());
-		temp->setLeftChild(n);
+		AVLNode<K, V> *temp = n->right;
+		n->setRight(temp->left);
+		temp->setLeft(n);
 		if (p == NULL)
 			setRoot(temp);
 		else if (side == left)
-			p->setLeftChild(temp);
+			p->setLeft(temp);
 		else
-			p->setRightChild(temp);
+			p->setRight(temp);
 	}
-
 	void rotateRight(AVLNode<K, V> *n)
 	{
 		enum
@@ -61,20 +67,20 @@ private:
 			left,
 			right
 		} side;
-		AVLNode<K, V> *p = n->getParent();
-		if (p != NULL && p->getLeftChild() == n)
+		AVLNode<K, V> *p = n->parent;
+		if (p != NULL && p->left == n)
 			side = left;
 		else
 			side = right;
-		AVLNode<K, V> *temp = n->getLeftChild();
-		n->setLeftChild(temp->getRightChild());
-		temp->setRightChild(n);
+		AVLNode<K, V> *temp = n->left;
+		n->setLeft(temp->right);
+		temp->setRight(n);
 		if (p == NULL)
 			setRoot(temp);
 		else if (side == left)
-			p->setLeftChild(temp);
+			p->setLeft(temp);
 		else
-			p->setRightChild(temp);
+			p->setRight(temp);
 	}
 	void setRoot(AVLNode<K, V> *n)
 	{
@@ -88,12 +94,12 @@ private:
 		AVLNode<K, V> *temp = root;
 		while (temp != NULL)
 		{
-			if (key == temp->getKey())
+			if (key == temp->content.first)
 				break;
-			else if (key < temp->getKey())
-				temp = temp->getLeftChild();
+			else if (key < temp->content.first)
+				temp = temp->left;
 			else
-				temp = temp->getRightChild();
+				temp = temp->right;
 		}
 		return temp;
 	}
@@ -110,17 +116,14 @@ private:
 			}
 			else
 			{
-				printSubtree(subtree->getLeftChild(), depth - 1,
-							 level, first);
-				printSubtree(subtree->getRightChild(), depth - 1,
-							 level, false);
+				printSubtree(subtree->left, depth - 1, level, first);
+				printSubtree(subtree->right, depth - 1, level, false);
 			}
 		}
 		else if (subtree == NULL)
 			std::cout << std::setw((first) ? spacing(level) / 2 : spacing(level)) << "-";
-
 		else
-			std::cout << std::setw((first) ? spacing(level) / 2 : spacing(level)) << subtree->getKey();
+			std::cout << std::setw((first) ? spacing(level) / 2 : spacing(level)) << subtree->content.first;
 	}
 	int spacing(int level)
 	{
@@ -132,32 +135,32 @@ private:
 
 public:
 	AVLTree() : root(NULL) {}
-	AVLTree(K key, V val) {	root = new AVLNode<K, V>(key, val);	}
+	AVLTree(ft::pair<K,V> pair) {	root = new AVLNode<K, V>(pair);	}
 
 	int getHeight() { return root->getHeight(); }
-	bool insert(K key, V val)
+	bool insert(ft::pair<K,V> pair)
 	{
 		if (root == NULL)
-			root = new AVLNode<K, V>(key, val);
+			root = new AVLNode<K, V>(pair);
 		else
 		{
 			AVLNode<K, V> *added_node = NULL;
 			AVLNode<K, V> *temp = root;
 			while (temp != NULL && added_node == NULL)
 			{
-				if (key < temp->getKey())
+				if (pair.first < temp->content.first)
 				{
-					if (temp->getLeftChild() == NULL)
-						added_node = temp->setLeftChild(new AVLNode<K, V>(key, val));
+					if (temp->left == NULL)
+						added_node = temp->setLeft(new AVLNode<K, V>(pair));
 					else
-						temp = temp->getLeftChild();
+						temp = temp->left;
 				}
-				else if (key > temp->getKey())
+				else if (pair.first > temp->content.first)
 				{
-					if (temp->getRightChild() == NULL)
-						added_node = temp->setRightChild(new AVLNode<K, V>(key, val));
+					if (temp->right == NULL)
+						added_node = temp->setRight(new AVLNode<K, V>(pair));
 					else
-						temp = temp->getRightChild();
+						temp = temp->right;
 				}
 				else
 					return false;
@@ -168,7 +171,7 @@ public:
 			{
 				temp->updateHeight();
 				balanceAtNode(temp);
-				temp = temp->getParent();
+				temp = temp->parent;
 			}
 		}
 		return true;
@@ -183,14 +186,14 @@ public:
 			left,
 			right
 		} side;
-		AVLNode<K, V> *p = toBeRemoved->getParent();
+		AVLNode<K, V> *p = toBeRemoved->parent;
 		if (p != NULL &&
-			p->getLeftChild() == toBeRemoved)
+			p->left == toBeRemoved)
 			side = left;
 		else
 			side = right;
-		if (toBeRemoved->getLeftChild() == NULL)
-			if (toBeRemoved->getRightChild() == NULL)
+		if (toBeRemoved->left == NULL)
+			if (toBeRemoved->right == NULL)
 			{
 				if (p == NULL)
 				{
@@ -200,9 +203,9 @@ public:
 				else
 				{
 					if (side == left)
-						p->setLeftChild(NULL);
+						p->setLeft(NULL);
 					else
-						p->setRightChild(NULL);
+						p->setRight(NULL);
 					delete toBeRemoved;
 					p->updateHeight();
 					balanceAtNode(p);
@@ -212,33 +215,33 @@ public:
 			{
 				if (p == NULL)
 				{
-					setRoot(toBeRemoved->getRightChild());
+					setRoot(toBeRemoved->right);
 					delete toBeRemoved;
 				}
 				else
 				{
 					if (side == left)
-						p->setLeftChild(toBeRemoved->getRightChild());
+						p->setLeft(toBeRemoved->right);
 					else
-						p->setRightChild(toBeRemoved->getRightChild());
+						p->setRight(toBeRemoved->right);
 					delete toBeRemoved;
 					p->updateHeight();
 					balanceAtNode(p);
 				}
 			}
-		else if (toBeRemoved->getRightChild() == NULL)
+		else if (toBeRemoved->right == NULL)
 		{
 			if (p == NULL)
 			{
-				setRoot(toBeRemoved->getLeftChild());
+				setRoot(toBeRemoved->left);
 				delete toBeRemoved;
 			}
 			else
 			{
 				if (side == left)
-					p->setLeftChild(toBeRemoved->getLeftChild());
+					p->setLeft(toBeRemoved->left);
 				else
-					p->setRightChild(toBeRemoved->getLeftChild());
+					p->setRight(toBeRemoved->left);
 				delete toBeRemoved;
 				p->updateHeight();
 				balanceAtNode(p);
@@ -252,48 +255,48 @@ public:
 			int bal = toBeRemoved->getBalance();
 			if (bal > 0)
 			{
-				if (toBeRemoved->getLeftChild()->getRightChild() == NULL)
+				if (toBeRemoved->left->right == NULL)
 				{
-					replacement = toBeRemoved->getLeftChild();
-					replacement->setRightChild(toBeRemoved->getRightChild());
+					replacement = toBeRemoved->left;
+					replacement->setRight(toBeRemoved->right);
 					temp_node = replacement;
 				}
 				else
 				{
-					replacement = toBeRemoved->getLeftChild()->getRightChild();
-					while (replacement->getRightChild() != NULL)
-						replacement = replacement->getRightChild();
-					replacement_parent = replacement->getParent();
-					replacement_parent->setRightChild(replacement->getLeftChild());
+					replacement = toBeRemoved->left->right;
+					while (replacement->right != NULL)
+						replacement = replacement->right;
+					replacement_parent = replacement->parent;
+					replacement_parent->setRight(replacement->left);
 					temp_node = replacement_parent;
-					replacement->setLeftChild(toBeRemoved->getLeftChild());
-					replacement->setRightChild(toBeRemoved->getRightChild());
+					replacement->setLeft(toBeRemoved->left);
+					replacement->setRight(toBeRemoved->right);
 				}
 			}
-			else if (toBeRemoved->getRightChild()->getLeftChild() == NULL)
+			else if (toBeRemoved->right->left == NULL)
 			{
-				replacement = toBeRemoved->getRightChild();
-				replacement->setLeftChild(toBeRemoved->getLeftChild());
+				replacement = toBeRemoved->right;
+				replacement->setLeft(toBeRemoved->left);
 				temp_node = replacement;
 			}
 			else
 			{
-				replacement = toBeRemoved->getRightChild()->getLeftChild();
-				while (replacement->getLeftChild() != NULL)
-					replacement = replacement->getLeftChild();
+				replacement = toBeRemoved->right->left;
+				while (replacement->left != NULL)
+					replacement = replacement->left;
 				
-				replacement_parent = replacement->getParent();
-				replacement_parent->setLeftChild(replacement->getRightChild());
+				replacement_parent = replacement->parent;
+				replacement_parent->setLeft(replacement->right);
 				temp_node = replacement_parent;
-				replacement->setLeftChild(toBeRemoved->getLeftChild());
-				replacement->setRightChild(toBeRemoved->getRightChild());
+				replacement->setLeft(toBeRemoved->left);
+				replacement->setRight(toBeRemoved->right);
 			}
 			if (p == NULL)
 				setRoot(replacement);
 			else if (side == left)
-				p->setLeftChild(replacement);
+				p->setLeft(replacement);
 			else
-				p->setRightChild(replacement);
+				p->setRight(replacement);
 			delete toBeRemoved;
 			balanceAtNode(temp_node);
 		}
@@ -304,8 +307,39 @@ public:
 		AVLNode<K,V> *n = findNode(key);
 		if (n == NULL)
 			return 0;
-		return n->getValue();
+		return n->content.second;
 	}
+	node_pointer getFirst()
+	{
+		if (root == NULL)
+			return NULL;
+		node_pointer node = root;
+		while(node->left != NULL)
+			node = node->left;
+		return node;
+	}
+
+	iterator begin()
+	{
+		iterator it(root, getFirst());
+		return it;
+	}
+
+	node_pointer getLast()
+	{
+		if (root == NULL)
+			return NULL;
+		node_pointer node = root;
+		while(node->right != NULL)
+			node = node->right;
+		return node;
+	}
+	iterator end()
+	{
+		iterator it(root, getLast() + 1);
+		return it;
+	}
+
 	// debug
 	void print()
 	{

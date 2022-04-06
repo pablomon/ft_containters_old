@@ -3,18 +3,23 @@
 #include <iomanip>
 #include <stdlib.h>
 #include <vector>
+#include <map>
+#include <utility>
 
 #include "avlTree.hpp"
 #include "avlNode.hpp"
+#include "avlIterator.hpp"
 
 int main() {
    	int c, key;
    	AVLTree<int, int> avl;
+	std::map<int,int> mapa;
 
 	srand (time(NULL));
-	int keys[20];
+	int size = 15;
+	int keys[size];
 	std::vector<int> nonrepkeys;
-	while (nonrepkeys.size() != 20)
+	while (nonrepkeys.size() != size)
 	{
 		int k = rand() % 99;
 		bool exists = false;
@@ -25,87 +30,203 @@ int main() {
 		}
 		if (!exists)
 		{
-			nonrepkeys.push_back(k);	
-			avl.insert(k, k + 1);
+			nonrepkeys.push_back(k);
+			avl.insert(ft::make_pair<int,int>(k, k+1));
+			mapa.insert(std::pair<int,int>(k, k+1));
 		}
 	}
 
+	// for (size_t i = 0; i < 10; i++)
+	// {
+	// 	avl.insert(ft::make_pair<int,int>(i, i+1));
+	// }
+	
+
 	avl.print();
-   	while (1) {
-	   	std::cout << "\n";
-		std::cout << "1.Insert Element into the tree" << std::endl;
-		std::cout << "2.print Balanced AVL Tree" << std::endl;
-		std::cout << "3.search" << std::endl;
-		std::cout << "4.delete" << std::endl;
-		std::cout << "Enter your Choice: ";
-		std::cin >> c;
-		switch (c) {
-			case 1:
-			{
-				std::cout << "Enter key: ";
-				std::cin >> key;
-				int v;
-				std::cout << "Enter value:";
-				std::cin >> v;
-				avl.insert(key, v);
-				avl.print();		
-			}
-			break;
-			case 2:
-				// if (root == NULL) {
-				// std::cout << "Tree is Empty" << std::endl;
-				// continue;
-				// }
-				std::cout << "Balanced AVL Tree:" << std::endl;
-				avl.print();		
-				std::cout<<std::endl;
-			break;
-			case 3:
-			{
-				std::cout << "Enter key to search for: " << std::endl;
-				std::cin >> key;
-				int val = avl.getValue(key);
 
-				std::cout << val;
-			}
-			break;
-			case 4:
-			{
-				std::cout << "Enter key to delete: " << std::endl;
-				std::cin >> key;
-				bool res = avl.remove(key);
-				if (!res)
-					std::cout << "Not found." << std::endl;
-				else
-				{
-					std::cout << "Deleted" << std::endl;
-					avl.print();		
-				}
-			}
-			break;
+/* map */
+	// mapa.insert(std::pair<int, int>(10, 12));
+	// mapa.insert(std::pair<int, int>(30, 3));
+	// mapa.insert(std::pair<int, int>(5, 30));
+	// mapa.insert(std::pair<int, int>(40, 22));
+	// mapa.insert(std::pair<int, int>(60, 2));
 
-			// case 3:
-			// 	std::cout << "Inorder Traversal:" << std::endl;
-			// 	avl.inorder(r);
-			// 	std::cout << std::endl;
-			// break;
-			// case 4:
-			// 	std::cout << "Preorder Traversal:" << std::endl;
-			// 	avl.preorder(r);
-			// 	std::cout << std::endl;
-			// break;
-			// case 5:
-			// 	std::cout << "Postorder Traversal:" << std::endl;
-			// 	avl.postorder(r);
-			// 	std::cout << std::endl;
-			// break;
-			// case 6:
-			// 	exit(1);
-			// case 7:
-			// 	AVLTree::print(r);
-			default:
-				std::cout << "Wrong Choice" << std::endl;
-		}	
-	}			
+	// std::map<int, int>::iterator it = mapa.begin();
+
+	// std::cout << "end first: " << it->first << std::endl;
+
+	// while (it != mapa.end())
+	// {
+	// 	std::cout << it->first << std::endl;
+	// 	it++;
+	// }
+
+    // // Iterate over the map using Iterator till end.
+	// it = mapa.begin();
+	// for (size_t i = 0; i < 10; i++)
+	// {
+    //     std::cout << it->first << " :: " << it->second << std::endl;
+    //     it++;
+	// }
+	// std::cout << std::endl;
+	
+	// mapa.erase(30);
+
+	// it = mapa.end();
+	// std::cout << it->first << std::endl;
+	// it ++;
+	// std::cout << it->first << std::endl;
+	// it ++;
+	// std::cout << it->first << std::endl;
+	// it ++;
+	// std::cout << it->first << std::endl;
+	// it ++;
+	
+
+/* map iterator */
+	std::map<int,int>::iterator map_it = mapa.end();
+	std::cout << "end = " << map_it->first << std::endl;
+	map_it = mapa.begin();
+	std::cout << "begin = " << map_it->first << std::endl;
+	map_it--;
+	std::cout << "begin-- = " << map_it->first << std::endl;
+	map_it++;
+	std::cout << "begin++ = " << map_it->first << std::endl;
+	map_it++;
+	std::cout << "begin++ = " << map_it->first << std::endl;
+	map_it++;
+	std::cout << "begin++ = " << map_it->first << std::endl;
+	map_it--;
+	std::cout << "begin-- = " << map_it->first << std::endl;
+	map_it--;
+	std::cout << "begin-- = " << map_it->first << std::endl;
+	map_it--;
+	std::cout << "begin-- = " << map_it->first << std::endl;
+	map_it--;
+	std::cout << "begin-- = " << map_it->first << std::endl;
+	map_it--;
+	std::cout << "begin-- = " << map_it->first << std::endl;
+	map_it = mapa.begin();
+	while (map_it != mapa.end())
+	{
+		std::cout << map_it->first << std::endl;
+		map_it++;
+	}
+	map_it = mapa.end();
+	map_it++;
+	std::cout << "end++ = " << map_it->first << std::endl;
+	map_it++;
+	std::cout << "end++ = " << map_it->first << std::endl;
+	map_it++;
+	std::cout << "end++ = " << map_it->first << std::endl;
+	map_it++;
+	std::cout << "end++ = " << map_it->first << std::endl;
+	map_it++;
+	std::cout << "end++ = " << map_it->first << std::endl;
+	map_it++;
+	std::cout << "end++ = " << map_it->first << std::endl;
+	map_it++;
+	std::cout << "end++ = " << map_it->first << std::endl;
+	map_it++;
+	std::cout << "end++ = " << map_it->first << std::endl;
+	map_it++;
+	std::cout << "end++ = " << map_it->first << std::endl;
+	map_it--;
+	std::cout << "end-- = " << map_it->first << std::endl;
+	std::cout << "end = " << map_it->first << std::endl;	
+	while (map_it != mapa.begin())
+	{
+		std::cout << map_it->first << std::endl;
+		map_it--;
+	}
+
+/* mi iterator */
+std::cout << "---------------\n";
+	
+	AVLTree<int,int>::iterator it = avl.end();
+	std::cout << "end = " << it->first << std::endl;
+	it = avl.begin();
+	std::cout << "begin = " << it->first << std::endl;
+	it--;
+	std::cout << "begin-- = " << it->first << std::endl;
+	it++;
+	std::cout << "begin++ = " << it->first << std::endl;
+	it++;
+	std::cout << "begin++ = " << it->first << std::endl;
+	it++;
+	std::cout << "begin++ = " << it->first << std::endl;
+	it--;
+	std::cout << "begin-- = " << it->first << std::endl;
+	it--;
+	std::cout << "begin-- = " << it->first << std::endl;
+	it--;
+	std::cout << "begin-- = " << it->first << std::endl;
+	it--;
+	std::cout << "begin-- = " << it->first << std::endl;
+	it--;
+	std::cout << "begin-- = " << it->first << std::endl;
+	it = avl.begin();
+	while (it != avl.end())
+	{
+		std::cout << it->first << std::endl;
+		it++;
+	}
+	it = avl.end();
+	it++;
+	std::cout << "end++ = " << it->first << std::endl;
+	it++;
+	std::cout << "end++ = " << it->first << std::endl;
+	it++;
+	std::cout << "end++ = " << it->first << std::endl;
+	it++;
+	std::cout << "end++ = " << it->first << std::endl;
+	it++;
+	std::cout << "end++ = " << it->first << std::endl;
+	it++;
+	std::cout << "end++ = " << it->first << std::endl;
+	it++;
+	std::cout << "end++ = " << it->first << std::endl;
+	it++;
+	std::cout << "end++ = " << it->first << std::endl;
+	it++;
+	std::cout << "end++ = " << it->first << std::endl;
+	it--;
+	std::cout << "end-- = " << it->first << std::endl;
+	std::cout << "end = " << it->first << std::endl;	
+	while (it != avl.begin())
+	{
+		std::cout << it->first << std::endl;
+		it--;
+	}
+
+
+std::cout << "---------------\n";
+	
+	it = avl.end();
+	std::cout << "end = " << avl.end()->first << std::endl;
+	it = avl.begin();
+	it--;
+	std::cout << "begin-- = " << it->first << std::endl;
+	it = avl.begin();
+	while (it != avl.end())
+	{
+		std::cout << it->first << std::endl;
+		it++;
+	}
+	std::cout << "----\n";
+	it++;
+	it++;
+	it--;
+	it--;
+	it--;
+	std::cout << "> "  << it->first << std::endl;
+	it = avl.end();
+	std::cout << "end = " << avl.end()->first << std::endl;
+	while (it != avl.begin())
+	{
+		std::cout << it->first << std::endl;
+		it--;
+	}
+
    	return 0;
 }

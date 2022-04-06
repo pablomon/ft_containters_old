@@ -10,7 +10,6 @@ namespace ft
 		typedef T1 first_type;
 		typedef T2 second_type;
 
-	private:
 		first_type first;
 		second_type second;
 
@@ -29,6 +28,7 @@ namespace ft
 		}
 	};
 
+	/* Comparators */
 	template <class T1, class T2>
 	bool operator==(const ft::pair<T1, T2> &lhs, const ft::pair<T1, T2> &rhs)
 	{
@@ -63,6 +63,13 @@ namespace ft
 	bool operator<=(const ft::pair<T1, T2> &lhs, const ft::pair<T1, T2> &rhs)
 	{
 		return !(rhs < lhs);
+	}
+
+	/* Make pair */
+	template <class T1, class T2>
+	ft::pair < T1, T2 > make_pair( T1 t, T2 u )
+	{
+		return ft::pair< T1, T2 >( t, u );
 	}
 }
 
