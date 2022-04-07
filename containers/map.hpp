@@ -16,7 +16,7 @@ namespace ft
 			typedef Key 				key_type;
 			typedef T 					mapped_type;
 			typedef	Compare				key_compare;
-			typedef ft::pair<const key_type, mapped_type> 			value_type;
+			typedef ft::pair<const key_type, mapped_type> 	value_type;
 			class value_compare
 			{
 				friend class map;
@@ -24,12 +24,16 @@ namespace ft
 					Compare comp;
 					value_compare(Compare c) : comp(c) {}
 				public:
-					typedef bool result_type;
-					typedef value_type first_argument_type;
-					typedef value_type second_argument_type;
-					bool operator() (const value_type & x, const value_type & y) const	{ return comp(x.first, y.first); }
+					typedef bool 		result_type;
+					typedef value_type	first_argument_type;
+					typedef value_type	second_argument_type;
+					bool operator() (const value_type & x, const value_type & y) const	
+					{ 
+						return comp(x.first, y.first); 
+					}
 			};
-			typedef Alloc	allocator_type;
+
+			typedef 		 Alloc						allocator_type;
 			typedef typename Alloc::reference &			reference;
 			typedef typename Alloc::const_reference &	const_reference;
 			typedef typename Alloc::pointer &			pointer;

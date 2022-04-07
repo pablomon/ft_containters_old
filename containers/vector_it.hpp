@@ -16,13 +16,19 @@ namespace ft
 	struct vectorIterator
 	{
 		public:
+
+		// typedef typename ft::iterator_traits<iterator_type>::iterator_category		iterator_category;
+		// typedef typename ft::iterator_traits<iterator_type>::value_type				value_type;
+		// typedef typename ft::iterator_traits<iterator_type>::difference_type		difference_type;
+		// typedef typename ft::iterator_traits<iterator_type>::pointer				pointer;
+		// typedef typename ft::iterator_traits<iterator_type>::reference				reference;
+		
 		typedef T						value_type;
 		typedef value_type				*pointer;
 		typedef value_type const 		*const_pointer;
 		typedef value_type				&reference;
 		typedef value_type const 		&const_reference;
 		typedef std::ptrdiff_t 			difference_type;
-		typedef std::random_access_iterator_tag 	iterator_category;
 
 		public:
 		vectorIterator(pointer ptr) : m_ptr(ptr) {};
