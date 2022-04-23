@@ -9,7 +9,7 @@
 
 int main() {
    	int c, key;
-   	AVLTree<int, int> avl;
+   	ft::avlTree<int, int> avl;
 
 	int size = 7;
 	srand (time(NULL));
@@ -90,7 +90,7 @@ int main() {
 			break;
 			// case 5:
 			// {
-			// 	AVLNode<int,int> *n = avl.getInOrderBegin();
+			// 	avlNode<int,int> *n = avl.getInOrderBegin();
 			// 	std::cout << "Begin key = " << n->getPair().first << std::endl;
 			// }
 			// break;

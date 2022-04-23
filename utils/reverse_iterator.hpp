@@ -25,7 +25,9 @@ namespace ft
 		reverse_iterator(iterator_type it) : m_baseit(it) { }
 		// copy constructor
 		template <class Iter>
-		reverse_iterator(const reverse_iterator<Iter> &other) : m_baseit(other.m_baseit) { }
+		reverse_iterator(const reverse_iterator<Iter> &other) {
+			m_baseit(other.m_baseit);
+		}
 		// destructor
 		~reverse_iterator() { }
 

@@ -12,7 +12,7 @@
 
 int main() {
    	int c, key;
-   	AVLTree<int, int> avl;
+   	ft::avlTree<int, int> avl;
 	std::map<int,int> mapa;
 
 	srand (time(NULL));
@@ -142,8 +142,9 @@ int main() {
 
 /* mi iterator */
 std::cout << "---------------\n";
+	ft::avlTree<int,int>::iterator it = avl.end();
 	
-	AVLTree<int,int>::iterator it = avl.end();
+std::cout << "---------------\n";
 	std::cout << "end = " << it->first << std::endl;
 	it = avl.begin();
 	std::cout << "begin = " << it->first << std::endl;

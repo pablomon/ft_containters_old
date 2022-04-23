@@ -258,46 +258,69 @@ void v_testCapacity()
 void v_testIterators()
 {
 	chapter("\nITERATORS");
-	log("Create vector v with values 1, 2, 3");
-	NAMESPACE::vector<TYPE> v;
-	v.push_back("a");
-	v.push_back("b");
-	v.push_back("c");
-	assert(v[2] == "c");
-	PrintVector(v, "v");
+	log("- Non const iterators -");
+	{
+		log("Create vector v with values 1, 2, 3");
+		NAMESPACE::vector<TYPE> v;
+		v.push_back("a");
+		v.push_back("b");
+		v.push_back("c");
+		assert(v[2] == "c");
+		PrintVector(v, "v");
 
-	title("begin");
-	logn("Begin value:");
-	NAMESPACE::vector<TYPE>::iterator it = v.begin();
-	logn(*it);
-	assert(*it == "a");
-	logn("Begin + 1 value:");
-	assert(*(v.begin() + 1) == "b");
-	logn(*(v.begin() + 1));
-	
-	title("end");
-	logn("End - 1 value:");
-	assert(*(v.end() - 1) == "c");
-	logn(*(v.end() - 1));
-	logn("End - 2 value:");
-	assert(*(v.end() - 2) == "b");
-	logn(*(v.end() - 2));
+		title("begin");
+		logn("Begin value:");
+		NAMESPACE::vector<TYPE>::iterator it = v.begin();
+		logn(*it);
+		assert(*it == "a");
+		logn("Begin + 1 value:");
+		assert(*(v.begin() + 1) == "b");
+		logn(*(v.begin() + 1));
+		
+		title("end");
+		logn("End - 1 value:");
+		assert(*(v.end() - 1) == "c");
+		logn(*(v.end() - 1));
+		logn("End - 2 value:");
+		assert(*(v.end() - 2) == "b");
+		logn(*(v.end() - 2));
 
-	title("rbegin");
-	logn("rbegin value:");
-	assert(*(v.rbegin()) == "c");
-	logn(*(v.rbegin()));
-	logn("rbegin + 1 value:");
-	logn(*(v.rbegin() + 1));
-	assert(*(v.rbegin() + 1) == "b");
+		title("rbegin");
+		logn("rbegin value:");
+		assert(*(v.rbegin()) == "c");
+		logn(*(v.rbegin()));
+		logn("rbegin + 1 value:");
+		logn(*(v.rbegin() + 1));
+		assert(*(v.rbegin() + 1) == "b");
 
-	title("rend");
-	logn("rend - 1 value:");
-	assert(*(v.rend() - 1) == "a");
-	logn(*(v.rend() - 1));
-	logn("rend - 2 value:");
-	assert(*(v.rend() - 2) == "b");
-	logn(*(v.rend() - 2));
+		title("rend");
+		logn("rend - 1 value:");
+		assert(*(v.rend() - 1) == "a");
+		logn(*(v.rend() - 1));
+		logn("rend - 2 value:");
+		assert(*(v.rend() - 2) == "b");
+		logn(*(v.rend() - 2));
+	}
+
+	// log("- Const iterators -");
+	// {
+	// 	log("Create vector v with values 1, 2, 3");
+	// 	NAMESPACE::vector<TYPE> v;
+	// 	v.push_back("a");
+	// 	v.push_back("b");
+	// 	v.push_back("c");
+	// 	assert(v[2] == "c");
+	// 	PrintVector(v, "v");
+
+	// 	title("begin");
+	// 	logn("Begin value:");
+	// 	NAMESPACE::vector<TYPE>::const_iterator it = v.begin();
+	// 	logn(*it);
+	// 	assert(*it == "a");
+	// 	logn("Begin + 1 value:");
+	// 	assert(*(it + 1) == "b");
+	// 	logn(*(it + 1));
+	// }
 
 	chapterend("ITERATORS OK");
 }

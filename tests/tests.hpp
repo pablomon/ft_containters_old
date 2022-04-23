@@ -19,5 +19,6 @@
 
 void vector_tests();
 void stack_tests();
+void map_tests();
 
 #endif // TESTS_HPP

@@ -21,8 +21,8 @@ namespace ft
 		/*
 		 Member types -------------------------------------
 		*/
-		typedef T															value_type;
-		typedef Alloc														allocator_type;
+		typedef T										value_type;
+		typedef Alloc									allocator_type;
 		typedef typename allocator_type::size_type		size_type;
 		typedef std::ptrdiff_t							difference_type;
 		typedef typename allocator_type::reference							reference;
@@ -167,14 +167,15 @@ namespace ft
 		/*
 		 Iterators ---------------------------------
 		*/
-		iterator begin() { return iterator(m_data); }
-		const_iterator begin() const { return const_iterator(m_data); }
-		iterator end() { return iterator(m_data + m_size); }
-		const_iterator end() const { return const_iterator(m_data + m_size); }
-		reverse_iterator rbegin() {	return (this->end()); }
-		const_reverse_iterator rbegin() const {	return (this->end()); }
-		reverse_iterator rend()	{ return (this->begin()); }
-		const_reverse_iterator rend() const	{ return (this->begin()); }
+		iterator 		begin() 		{ return iterator(m_data); }
+		const_iterator 	begin()	const	{ return const_iterator(m_data); }
+		iterator 		end()			{ return iterator(m_data + m_size); }
+		const_iterator 	end()	const	{ return const_iterator(m_data + m_size); }
+
+		reverse_iterator 		rbegin()			{ return (this->end()); }	//TODO: comprobar que el reverse iterator funciona realmenete al revés
+		const_reverse_iterator	rbegin()	const	{ return (this->end()); }
+		reverse_iterator 		rend()				{ return (this->begin()); }
+		const_reverse_iterator 	rend()		const	{ return (this->begin()); }
 
 		/*
 		 Capacity ------------------------------------------
